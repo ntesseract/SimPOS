@@ -31,7 +31,7 @@ class KasirController extends Controller
         foreach ($request->items as $item) {
             $barang = Barang::find($item['id']);
             $subtotal = $barang->harga * $item['quantity'];
-            
+
             $items[] = [
                 'barang' => $barang,
                 'quantity' => $item['quantity'],
@@ -42,14 +42,14 @@ class KasirController extends Controller
             $total_harga += $subtotal;
         }
 
-        // Buat transaksi
+        // untuk transaksi
         $transaksi = Transaksi::create([
             'tanggal' => now(),
             'total_barang' => $total_barang,
             'total_harga' => $total_harga,
         ]);
 
-        // Buat detail transaksi
+        // untuk detail transaksi
         foreach ($items as $item) {
             DetailTransaksi::create([
                 'transaksi_id' => $transaksi->id,

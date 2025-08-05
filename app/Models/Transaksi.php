@@ -11,6 +11,10 @@ class Transaksi extends Model
 
     protected $fillable = ['tanggal', 'total_barang', 'total_harga'];
 
+    protected $casts = [
+        'tanggal' => 'datetime',
+    ];
+
     public function detailTransaksis()
     {
         return $this->hasMany(DetailTransaksi::class);
