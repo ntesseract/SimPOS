@@ -1,105 +1,91 @@
-# Panduan Menjalankan Project dari Git Clone
+# Panduan Menjalankan SimPOS (Laravel 12 + MySQL)
 
-Berikut adalah panduan lengkap untuk menjalankan project Laravel ini setelah melakukan `git clone`:
+# SimPOS - Sistem Point of Sale
 
-## Prasyarat
-- PHP 8.0 atau lebih baru
-- Composer terinstal
-- MySQL/MariaDB terinstal
-- Node.js (untuk frontend assets)
+[![Laravel Version](https://img.shields.io/badge/Laravel-12.x-red.svg)](https://laravel.com)
+[![PHP Version](https://img.shields.io/badge/PHP-8.2+-blue.svg)](https://php.net)
+[![MySQL Version](https://img.shields.io/badge/MySQL-8.0+-blue.svg)](https://mysql.com)
 
-## Langkah-langkah
+## Persyaratan Sistem
+
+- PHP 8.2 atau lebih baru
+- Composer 2.5+
+- MySQL 8.0+ atau MariaDB 10.6+
+- Node.js 18.x+ (untuk frontend assets)
+- NPM 9.x+ atau Yarn 1.22+
+
+## Instalasi dan Konfigurasi
 
 ### 1. Clone Repository
+
 ```bash
-git clone https://[url-repository-anda].git
-cd [nama-folder-project]
+git clone https://github.com/ntesseract/SimPOS.git
+cd SimPOS
 ```
 
 ### 2. Install Dependencies
+
 ```bash
-composer install
+composer install --optimize-autoloader --no-dev
 npm install
 ```
 
-### 3. Konfigurasi Environment
-Salin file `.env.example` menjadi `.env`:
+### 3. Setup Environment
+
+Salin dan konfigurasi file environment:
+
 ```bash
 cp .env.example .env
 ```
 
-Edit file `.env` dan sesuaikan dengan setting database Anda:
+Edit file `.env` dengan konfigurasi yang diperlukan:
+
 ```env
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=nama_database_anda
-DB_USERNAME=username_database_anda
-DB_PASSWORD=password_database_anda
+DB_DATABASE=simpos_db
+DB_USERNAME=root
+DB_PASSWORD=
 ```
 
 ### 4. Generate Application Key
+
 ```bash
 php artisan key:generate
 ```
 
-### 5. Jalankan Migrasi dan Seeder
+### 5. Jalankan Database Migration dan Seeding
+
 ```bash
-php artisan migrate --seed
+php artisan migrate:fresh --seed
 ```
 
-### 6. Compile Assets (untuk development)
+### 6. Build Frontend Assets
+
+Untuk development:
+
 ```bash
 npm run dev
 ```
 
-### 7. Jalankan Development Server
+Untuk production:
+
 ```bash
-php artisan serve
+npm run build
 ```
 
-Buka browser dan akses:
-```
-http://localhost:8000
+### 7. Jalankan Aplikasi
+
+```bash
+composer run dev
 ```
 
-## Untuk Production
+## Optimasi Produksi
 
-### Optimasi Aplikasi
 ```bash
 php artisan optimize
 php artisan view:cache
 php artisan route:cache
 php artisan config:cache
 ```
-
-### Compile Assets untuk Production
-```bash
-npm run build
-```
-
-## Struktur Project Penting
-- `app/Models/` - Model database
-- `database/migrations/` - Skema database
-- `database/seeders/` - Data dummy
-- `resources/views/` - File tampilan
-- `routes/web.php` - Route aplikasi
-
-## Troubleshooting
-
-### Jika terjadi error permission:
-```bash
-chmod -R 775 storage bootstrap/cache
-```
-
-### Jika ada masalah dependency:
-```bash
-composer install --no-dev --optimize-autoloader
-rm -rf vendor/composer/installed.json
-composer install
-```
-
-### Jika database tidak terhubung:
-- Pastikan service database running
-- Verifikasi credential di `.env`
-- Coba koneksi manual ke database untuk memastikan
